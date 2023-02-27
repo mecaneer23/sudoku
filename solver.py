@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 def validate_file(file):
-    lines = file.read().split("\n")[:-1]
+    lines = file.read().split("\n")
     assert len(lines) == 9, f"Board should have 9 lines, has {len(lines)}"
     for i, line in enumerate(lines):
         assert len(line.split(" ")) == 9, f"Line {i + 1} should have 9 characters, has {len(line.split(' '))}"
@@ -12,8 +12,14 @@ def validate_file(file):
 def read_file(filename):
     with open(filename, 'r') as f:
         lines = validate_file(f)
-        output = [line.split(" ") for _, line in enumerate(lines)]
-        # parse text file to lists
+    return [line.split(" ") for _, line in enumerate(lines)]
+
+
+def print_board(board):
+    for i in board:
+        for j in i:
+            print(j, end=" ")
+        print()
 
 # iterate through board to solve
 # write to string
