@@ -21,9 +21,16 @@ def print_board(board):
             print(j, end=" ")
         print()
 
+
+def board_to_file(board):
+    with open("puzzle.txt", "w") as f:
+        for i in board:
+            for j in i:
+                f.write(f"{j} ")
+            f.write("\n")
+
+
 # iterate through board to solve
-# write to string
-# write to file
 def main():
     puzzle = read_file("puzzle.txt")
 
