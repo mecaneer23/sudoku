@@ -14,6 +14,14 @@ def validate_file(file):
     return lines
 
 
+def remove_zeros(board):
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] == "0":
+                board[i][j] = " "
+    return board
+
+
 def read_file(filename):
     with open(filename, "r") as f:
         lines = validate_file(f)
@@ -36,13 +44,18 @@ def board_to_file(board):
 
 
 def check_board(board):
-    for i in 9:
-        for j in 9:
-            find_remaining(
+    board = remove_zeros(board)
+    for i in range(9):
+        for j in range(9):
+            print(i, j)
+            possible_chars = find_remaining(
                 combine_lists(
                     get_from_row(board, i), get_from_column(board, j), get_from_square(board, get_square_index(i, j))
                 )
             )
+            if len(possible_chars) == 1:
+                board[i][j] = possible_chars[0]
+    return board
 
 
 def get_from_row(board, row_idx):
@@ -81,10 +94,15 @@ def get_from_square(board, square_idx):
 def combine_lists(a, b, c):
     """Combines lists of numbers"""
     chars = [*a, *b, *c]
-    assert len(chars) <= 9
+    for _ in range(chars.count(" ")):
+        chars.remove(" ")
+    for i in chars.copy():
+        if chars.count(i) > 0:
+            chars.remove(i)
+    assert len(chars) <= 9, f"There are {len(chars)}, but there should be 9 or fewer: {chars}"
     assert len(chars) == len(
         set(chars)
-    ), "Repeating digits in row, column, or square not allowed"
+    ), f"Repeating digits in row, column, or square not allowed: {max(set(chars), key = chars.count)}, {chars}"
     return chars
 
 
@@ -95,10 +113,9 @@ def find_remaining(numbers):
     return remaining
 
 
-# iterate through board to solve
 def main():
     puzzle = read_file("puzzle.txt")
-    print(get_from_square(puzzle, 5))
+    print_board(check_board(puzzle))
 
 
 if __name__ == "__main__":
