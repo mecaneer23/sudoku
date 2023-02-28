@@ -14,14 +14,6 @@ def validate_file(file):
     return lines
 
 
-def remove_zeros(board):
-    for i in range(9):
-        for j in range(9):
-            if board[i][j] == "0":
-                board[i][j] = " "
-    return board
-
-
 def read_file(filename):
     with open(filename, "r") as f:
         lines = validate_file(f)
@@ -43,18 +35,27 @@ def board_to_file(board):
             f.write("\n")
 
 
+def isSolved(board):
+    for i in board:
+        row = remove_zeros(i.copy())
+        if len(row) != 9 or "".join(sorted(row)) != "123456789":
+            return False
+    return True
+
+
 def check_board(board):
-    board = remove_zeros(board)
-    for i in range(9):
-        for j in range(9):
-            print(i, j)
-            possible_chars = find_remaining(
-                combine_lists(
-                    get_from_row(board, i), get_from_column(board, j), get_from_square(board, get_square_index(i, j))
+    while not isSolved(board):
+        for i in range(9):
+            for j in range(9):
+                possible_chars = find_remaining(
+                    combine_lists(
+                        get_from_row(board, i),
+                        get_from_column(board, j),
+                        get_from_square(board, get_square_index(i, j)),
+                    )
                 )
-            )
-            if len(possible_chars) == 1:
-                board[i][j] = possible_chars[0]
+                if len(possible_chars) == 1:
+                    board[i][j] = possible_chars[0]
     return board
 
 
@@ -80,26 +81,43 @@ def get_from_square(board, square_idx):
     3  4  5\n
     6  7  8
     """
+    assert square_idx < 9, f"index should be less than 9, is {square_idx}"
+    assert len(board) == 9, f"board should have 9 rows, has {len(board)}"
+    for i in range(9):
+        assert (
+            len(board[i]) == 9
+        ), f"length of row {i} should be 9, is {len(board[i])}, {board[i]}"
     row = square_idx // 3
     column = square_idx % 3
     output = []
     for i in range(3):
         for j in range(3):
-            item = board[row*3 + i][column*3 + j]
+            try:
+                item = board[row * 3 + i][column * 3 + j]
+            except IndexError:
+                print(f"{row=}, {i=}, {column=}, {j=}")
+                print_board(board)
+                exit()
             if item != "0":
                 output.append(item)
     return output
 
 
+def remove_zeros(iter):
+    for _ in range(iter.count("0")):
+        iter.remove("0")
+    return iter
+
+
 def combine_lists(a, b, c):
     """Combines lists of numbers"""
-    chars = [*a, *b, *c]
-    for _ in range(chars.count(" ")):
-        chars.remove(" ")
+    chars = remove_zeros([*a, *b, *c])
     for i in chars.copy():
         if chars.count(i) > 0:
             chars.remove(i)
-    assert len(chars) <= 9, f"There are {len(chars)}, but there should be 9 or fewer: {chars}"
+    assert (
+        len(chars) <= 9
+    ), f"There are {len(chars)}, but there should be 9 or fewer: {chars}"
     assert len(chars) == len(
         set(chars)
     ), f"Repeating digits in row, column, or square not allowed: {max(set(chars), key = chars.count)}, {chars}"
