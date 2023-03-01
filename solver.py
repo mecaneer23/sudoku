@@ -163,7 +163,9 @@ def main():
         full_board_iterations_since_last_update += 1
         if full_board_iterations_since_last_update > 10:
             board_to_file(puzzle)
-            assert False, "This puzzle is more complicated than this solver currently supports, sorry!"
+            assert (
+                False
+            ), "This puzzle is more complicated than this solver currently supports, sorry!"
     print_board(puzzle)
     board_to_file(puzzle)
     print("Solved!")
