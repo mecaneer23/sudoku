@@ -149,7 +149,6 @@ def main():
                 possible_chars = check_board(puzzle, i, j)
                 if len(possible_chars) == 1:
                     puzzle[i][j] = possible_chars[0]
-                    print(".")
     print_board(puzzle)
 
 
