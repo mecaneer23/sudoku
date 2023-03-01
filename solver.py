@@ -43,20 +43,15 @@ def isSolved(board):
     return True
 
 
-def check_board(board):
-    while not isSolved(board):
-        for i in range(9):
-            for j in range(9):
-                possible_chars = find_remaining(
-                    combine_lists(
-                        get_from_row(board, i),
-                        get_from_column(board, j),
-                        get_from_square(board, get_square_index(i, j)),
-                    )
-                )
-                if len(possible_chars) == 1:
-                    board[i][j] = possible_chars[0]
-    return board
+def check_board(board, row_idx, col_idx):
+    """Given a board, row index, and column index, return a list of possible digits"""
+    return find_remaining(
+        combine_lists(
+            get_from_row(board, row_idx),
+            get_from_column(board, col_idx),
+            get_from_square(board, get_square_index(row_idx, col_idx)),
+        )
+    )
 
 
 def get_from_row(board, row_idx):
