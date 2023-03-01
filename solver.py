@@ -146,7 +146,7 @@ def main():
                 if puzzle[i][j] != "0":
                     continue
                 possible_chars = check_board(puzzle, i, j)
-                # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques#:~:text=The%20easiest%20way%20starting%20a,the%20way%20to%20the%20end.
+                # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
                 # Some methods to solve:
                 # - Scanning in one direction
                 # - Scanning in two directions
