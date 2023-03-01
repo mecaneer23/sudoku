@@ -35,11 +35,21 @@ def board_to_file(board):
             f.write("\n")
 
 
-def isSolved(board):
-    for i in board:
-        row = remove_zeros(i.copy())
-        if len(row) != 9 or "".join(sorted(row)) != "123456789":
-            return False
+def has_all_digits(lst):
+    return ("".join(sorted(lst)) != "123456789",)
+
+
+def is_solved(board):
+    for i in range(9):
+        for j in range(9):
+            if any(
+                [
+                    has_all_digits(get_from_row(board, i)),
+                    has_all_digits(get_from_column(board, j)),
+                    has_all_digits(get_from_square(board, get_square_index(i, j))),
+                ]
+            ):
+                return False
     return True
 
 
@@ -131,7 +141,15 @@ def find_remaining(numbers):
 
 def main():
     puzzle = read_file("puzzle.txt")
-    print_board(check_board(puzzle))
+    while not is_solved(puzzle):
+        for i in range(9):
+            for j in range(9):
+                if puzzle[i][j] != "0":
+                    continue
+                possible_chars = check_board(puzzle, i, j)
+                if len(possible_chars) == 1:
+                    puzzle[i][j] = possible_chars[0]
+    print_board(puzzle)
 
 
 if __name__ == "__main__":
