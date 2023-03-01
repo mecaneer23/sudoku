@@ -61,15 +61,22 @@ def check_board(board):
 
 def get_from_row(board, row_idx):
     """Get a list of numbers from a given row in the board."""
-    return [i for i in board[row_idx] if i != "0"]
+    row = [i for i in board[row_idx] if i != "0"]
+    assert len(row) <= 9
+    return row
 
 
 def get_from_column(board, column_idx):
     """Get a list of numbers from a given column in the board."""
-    return [row[column_idx] for row in board if row[column_idx] != "0"]
+    column = [row[column_idx] for row in board if row[column_idx] != "0"]
+    assert len(column) <= 9
+    return column
 
 
 def get_square_index(row_idx, col_idx):
+    """Convert a 9x9 index to a 1x9 index (3x3)"""
+    assert row_idx < 9
+    assert col_idx < 9
     return row_idx // 3 * 3 + col_idx // 3
 
 
@@ -104,6 +111,7 @@ def get_from_square(board, square_idx):
 
 
 def remove_zeros(iter):
+    """Removes zeros from a list"""
     for _ in range(iter.count("0")):
         iter.remove("0")
     return iter
