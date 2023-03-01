@@ -160,7 +160,6 @@ def main():
                 if len(possible_chars) == 1:
                     puzzle[i][j] = possible_chars[0]
                     full_board_iterations_since_last_update = 0
-        # board_to_file(puzzle)
         full_board_iterations_since_last_update += 1
         if full_board_iterations_since_last_update > 2:
             board_to_file(puzzle)
@@ -184,5 +183,5 @@ def manual_to_file():
 
 
 if __name__ == "__main__":
-    main()
-    # manual_to_file()
+    manual_to_file()
+    # main()
