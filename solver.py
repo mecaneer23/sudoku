@@ -121,7 +121,7 @@ def combine_lists(a, b, c):
     """Combines lists of numbers"""
     chars = remove_zeros([*a, *b, *c])
     for i in chars.copy():
-        if chars.count(i) > 0:
+        if chars.count(i) > 1:
             chars.remove(i)
     assert (
         len(chars) <= 9
