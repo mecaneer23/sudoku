@@ -36,7 +36,7 @@ def board_to_file(board):
 
 
 def has_all_digits(lst):
-    return ("".join(sorted(lst)) != "123456789",)
+    return "".join(sorted(lst)) != "123456789"
 
 
 def is_solved(board):
@@ -149,6 +149,7 @@ def main():
                 possible_chars = check_board(puzzle, i, j)
                 if len(possible_chars) == 1:
                     puzzle[i][j] = possible_chars[0]
+                    print(".")
     print_board(puzzle)
 
 
