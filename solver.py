@@ -99,12 +99,7 @@ def get_from_square(board, square_idx):
     output = []
     for i in range(3):
         for j in range(3):
-            try:
-                item = board[row * 3 + i][column * 3 + j]
-            except IndexError:
-                print(f"{row=}, {i=}, {column=}, {j=}")
-                print_board(board)
-                exit()
+            item = board[row * 3 + i][column * 3 + j]
             if item != "0":
                 output.append(item)
     return output
