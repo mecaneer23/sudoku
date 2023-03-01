@@ -29,10 +29,7 @@ def print_board(board):
 
 def board_to_file(board):
     with open("puzzle.txt", "w") as f:
-        for i in board:
-            for j in i:
-                f.write(f"{j} ")
-            f.write("\n")
+        f.write("\n".join(" ".join(i) for i in board))
 
 
 def has_all_digits(lst):
@@ -149,8 +146,27 @@ def main():
                 possible_chars = check_board(puzzle, i, j)
                 if len(possible_chars) == 1:
                     puzzle[i][j] = possible_chars[0]
+                    print("Updated")
+        # board_to_file(puzzle)
+        print("Zeroing...")
+        # exit()
     print_board(puzzle)
+    board_to_file(puzzle)
+
+
+def manual_to_file():
+    print("Rows, no separation:")
+    board = []
+    for _ in range(9):
+        row = list(input())
+        for i, _ in enumerate(row):
+            if row[i] == " ":
+                row[i] = "0"
+        board.append(row)
+    board_to_file(board)
+    main()
 
 
 if __name__ == "__main__":
     main()
+    # manual_to_file()
