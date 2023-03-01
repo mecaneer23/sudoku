@@ -138,6 +138,7 @@ def find_remaining(numbers):
 
 def main():
     puzzle = read_file("puzzle.txt")
+    full_board_iterations_since_last_update = 0
     while not is_solved(puzzle):
         for i in range(9):
             for j in range(9):
@@ -146,10 +147,11 @@ def main():
                 possible_chars = check_board(puzzle, i, j)
                 if len(possible_chars) == 1:
                     puzzle[i][j] = possible_chars[0]
-                    print("Updated")
+                    full_board_iterations_since_last_update = 0
         # board_to_file(puzzle)
-        print("Zeroing...")
-        # exit()
+        full_board_iterations_since_last_update += 1
+        if full_board_iterations_since_last_update > 2:
+            assert False, "Something went wrong"
     print_board(puzzle)
     board_to_file(puzzle)
 
