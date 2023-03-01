@@ -27,9 +27,10 @@ def print_board(board):
         print()
 
 
-def board_to_file(board):
-    with open("puzzle.txt", "w") as f:
+def board_to_file(board, filename="puzzle.txt"):
+    with open(filename, "w") as f:
         f.write("\n".join(" ".join(i) for i in board))
+    print(f"Board written to {filename}")
 
 
 def has_all_digits(lst):
@@ -145,15 +146,28 @@ def main():
                 if puzzle[i][j] != "0":
                     continue
                 possible_chars = check_board(puzzle, i, j)
+                # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques#:~:text=The%20easiest%20way%20starting%20a,the%20way%20to%20the%20end.
+                # Some methods to solve:
+                # - Scanning in one direction
+                # - Scanning in two directions
+                # + Searching for Single Candidates
+                # - Eliminating numbers from rows, columns and boxes
+                # - Searching for missing numbers in rows and columns
+                # - Eliminating squares using Naked Pairs in a box
+                # - Eliminating squares using Naked Pairs in rows and columns
+                # - Eliminating squares using Hidden Pairs in rows and columns
+                # - Eliminating squares using X-Wing
                 if len(possible_chars) == 1:
                     puzzle[i][j] = possible_chars[0]
                     full_board_iterations_since_last_update = 0
         # board_to_file(puzzle)
         full_board_iterations_since_last_update += 1
         if full_board_iterations_since_last_update > 2:
-            assert False, "Something went wrong"
+            board_to_file(puzzle)
+            assert False, "This puzzle is more complicated than this solver currently supports, sorry!"
     print_board(puzzle)
     board_to_file(puzzle)
+    print("Solved!")
 
 
 def manual_to_file():
