@@ -17,6 +17,7 @@ def validate_file(file):
 def read_file(filename):
     with open(filename, "r") as f:
         lines = validate_file(f)
+    print(f"Board read from {filename}")
     return [line.split(" ") for _, line in enumerate(lines)]
 
 
@@ -137,8 +138,8 @@ def find_remaining(numbers):
     return remaining
 
 
-def main():
-    puzzle = read_file("puzzle.txt")
+def main(filename="puzzle.txt"):
+    puzzle = read_file(filename)
     full_board_iterations_since_last_update = 0
     while not is_solved(puzzle):
         for i in range(9):
@@ -162,16 +163,16 @@ def main():
                     full_board_iterations_since_last_update = 0
         full_board_iterations_since_last_update += 1
         if full_board_iterations_since_last_update > 10:
-            board_to_file(puzzle)
+            board_to_file(puzzle, filename)
             assert (
                 False
             ), "This puzzle is more complicated than this solver currently supports, sorry!"
     print_board(puzzle)
-    board_to_file(puzzle)
+    board_to_file(puzzle, filename)
     print("Solved!")
 
 
-def manual_to_file():
+def manual_to_file(filename="puzzle.txt"):
     print("Rows, no separation:")
     board = []
     for _ in range(9):
@@ -180,10 +181,12 @@ def manual_to_file():
             if row[i] == " ":
                 row[i] = "0"
         board.append(row)
-    board_to_file(board)
-    main()
+    board_to_file(board, filename)
+    main(filename)
 
 
 if __name__ == "__main__":
-    manual_to_file()
-    # main()
+    if (filename := input("Enter a filename or press enter for manual entry mode: ")):
+        main(filename)
+    else:
+        manual_to_file()
