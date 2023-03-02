@@ -52,8 +52,7 @@ def is_solved(board):
     return True
 
 
-def check_board(board, row_idx, col_idx):
-    """Given a board, row index, and column index, return a list of possible digits"""
+def get_possible_digits(board, row_idx, col_idx):
     return find_remaining(
         combine_lists(
             get_from_row(board, row_idx),
@@ -146,7 +145,7 @@ def main(filename="puzzle.txt"):
             for j in range(9):
                 if puzzle[i][j] != "0":
                     continue
-                possible_chars = check_board(puzzle, i, j)
+                possible_digits = get_possible_digits(puzzle, i, j)
                 # https://www.conceptispuzzles.com/index.aspx?uri=puzzle/sudoku/techniques
                 # Some methods to solve:
                 # - Scanning in one direction
@@ -158,8 +157,8 @@ def main(filename="puzzle.txt"):
                 # - Eliminating squares using Naked Pairs in rows and columns
                 # - Eliminating squares using Hidden Pairs in rows and columns
                 # - Eliminating squares using X-Wing
-                if len(possible_chars) == 1:
-                    puzzle[i][j] = possible_chars[0]
+                if len(possible_digits) == 1:
+                    puzzle[i][j] = possible_digits[0]
                     full_board_iterations_since_last_update = 0
         full_board_iterations_since_last_update += 1
         if full_board_iterations_since_last_update > 10:
