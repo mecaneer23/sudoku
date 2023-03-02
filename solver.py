@@ -14,7 +14,7 @@ def validate_file(file):
     return lines
 
 
-def read_file(filename):
+def read_file(filename="puzzle.txt"):
     with open(filename, "r") as f:
         lines = validate_file(f)
     print(f"Board read from {filename}")
@@ -62,16 +62,28 @@ def get_possible_digits(board, row_idx, col_idx):
     )
 
 
-def get_from_row(board, row_idx):
+def get_from_row(board, row_idx, filter_out_zeros=True):
     """Get a list of numbers from a given row in the board."""
-    row = [i for i in board[row_idx] if i != "0"]
+    row = []
+    for i in board[row_idx]:
+        if not filter_out_zeros:
+            row.append(i)
+            continue
+        if i != "0":
+            row.append(i)
     assert len(row) <= 9
     return row
 
 
-def get_from_column(board, column_idx):
+def get_from_column(board, column_idx, filter_out_zeros=True):
     """Get a list of numbers from a given column in the board."""
-    column = [row[column_idx] for row in board if row[column_idx] != "0"]
+    column = []
+    for row in board:
+        if not filter_out_zeros:
+            column.append(row[column_idx])
+            continue
+        if row[column_idx] != "0":
+            column.append(row[column_idx])
     assert len(column) <= 9
     return column
 
@@ -83,7 +95,7 @@ def get_square_index(row_idx, col_idx):
     return row_idx // 3 * 3 + col_idx // 3
 
 
-def get_from_square(board, square_idx):
+def get_from_square(board, square_idx, filter_out_zeros=True):
     """
     Get a list of numbers from a given square in the board. See indices below:
 
@@ -103,6 +115,9 @@ def get_from_square(board, square_idx):
     for i in range(3):
         for j in range(3):
             item = board[row * 3 + i][column * 3 + j]
+            if not filter_out_zeros:
+                output.append(item)
+                continue
             if item != "0":
                 output.append(item)
     return output
@@ -169,6 +184,11 @@ def main(filename="puzzle.txt"):
     print_board(puzzle)
     board_to_file(puzzle, filename)
     print("Solved!")
+
+
+def count_filled_cells(cells):
+    assert len(cells) == 9, f"Should be 9 cells, are {len(cells)}, {cells}"
+    return 9 - (cells.count(" ") + cells.count("0"))
 
 
 def row_remaining_squares(row_idx, col_idx):
