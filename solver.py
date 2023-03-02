@@ -172,6 +172,22 @@ def main(filename="puzzle.txt"):
     print("Solved!")
 
 
+def row_remaining_squares(row_idx, col_idx):
+    square_index = get_square_index(row_idx, col_idx)
+    row = square_index // 3 * 3
+    output = [row, row + 1, row + 2]
+    output.remove(square_index)
+    return output
+
+
+def column_remaining_squares(row_idx, col_idx):
+    square_index = get_square_index(row_idx, col_idx)
+    col = square_index % 3
+    output = [col, col + 3, col + 6]
+    output.remove(square_index)
+    return output
+
+
 def manual_to_file(filename="puzzle.txt"):
     print("Rows, no separation:")
     board = []
@@ -186,7 +202,7 @@ def manual_to_file(filename="puzzle.txt"):
 
 
 if __name__ == "__main__":
-    if (filename := input("Enter a filename or press enter for manual entry mode: ")):
+    if filename := input("Enter a filename or press enter for manual entry mode: "):
         main(filename)
     else:
         manual_to_file()
